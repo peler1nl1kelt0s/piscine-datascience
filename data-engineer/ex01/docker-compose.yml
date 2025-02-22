@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_USER: museker
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: piscineds
+    ports:
+      - "5432:5432"
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: esdskr@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: database123
+    ports:
+      - "5050:80"
+
