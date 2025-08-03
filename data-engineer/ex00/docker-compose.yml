@@ -4,11 +4,25 @@ services:
     container_name: postgres
     environment:
       POSTGRES_USER: museker
-      POSTGRES_PASSWORD: 123
+      POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: piscineds
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: museker@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: mysecretpassword
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
 volumes:
   postgres_data:
+  pgadmin-data:

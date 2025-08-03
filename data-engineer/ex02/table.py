@@ -11,7 +11,7 @@ def if_table_exists(engine, table_name):
     return table_name in metadata.tables
 
 def to_postgre(data : pd.DataFrame, tableName : str):
-    engine = db.create_engine('postgresql://museker:123@localhost:5432/piscineds')
+    engine = db.create_engine('postgresql://museker:mysecretpassword@localhost:5432/piscineds')
     if not if_table_exists(engine=engine, table_name=tableName):
         data.to_sql(
             name=tableName,
@@ -32,12 +32,13 @@ def get_data(csv_name : str) -> pd.DataFrame:
     base_dir = os.path.dirname(os.path.abspath(__file__))
     csv_path = os.path.join(base_dir, "..", "..","..","subject", "customer", csv_name)
     csv_path = os.path.abspath(csv_path)
-    data = pd.read_csv(csv_path + ".csv")
-    return data
+    print(csv_path)
+    # data = pd.read_csv(csv_path + ".csv")
+    # return data
 
 def main():
     data = get_data("data_2022_oct")
-    to_postgre(data, "data_2022_oct")
+    # to_postgre(data, "data_2022_oct")
 
 if __name__ == "__main__":
     main()
