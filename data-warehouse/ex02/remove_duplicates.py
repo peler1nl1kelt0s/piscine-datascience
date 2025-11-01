@@ -4,42 +4,20 @@ import sqlalchemy as db
 import os
 
 
-def to_postgre(data : pd.DataFrame, table : str):
+def remove_duplicates():
+    query = os.path.join(os.path.dirname(os.path.abspath(__file__)), "remove_duplicates.sql")
+    query = os.path.abspath(query)
+    with open(query, 'r') as file:
+        sql_query = file.read()
     engine = db.create_engine('postgresql://museker:mysecretpassword@localhost:5432/piscineds')
-    data.to_sql(
-        name=table,
-        con=engine,
-        index=False,
-        if_exists="replace",
-        dtype = {
-            "event_time": db.DateTime(),
-            "event_type": db.types.String(length=255),
-            "product_id": db.types.Integer(),
-            "price": db.types.Float(),
-            "user_id": db.types.BigInteger(),
-            "user_session": db.types.UUID(as_uuid=True)
-        }
-    )
-    print(f"{table} sended successfully!")
-
-def get_data(csv_name : str) -> pd.DataFrame:
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    csv_path = os.path.join(base_dir, "..", "..","..","subject", "customer", csv_name)
-    csv_path = os.path.abspath(csv_path)
-    data = pd.read_csv(csv_path)
-    return data
-
-
-def get_and_push():
-    name_list = ["data_2022_dec", "data_2022_nov", "data_2022_oct", "data_2023_jan", "data_2023_feb"]
-    customers = pd.concat([get_data(f + ".csv") for f in name_list])
-    customers = customers.drop_duplicates(subset=["event_time", "event_type", "product_id", "price", "user_id", "user_session"])
-    to_postgre(data=customers, table="customers")
-    customers = pd.DataFrame()
+    with engine.connect() as connection:
+        connection.execute(db.text(sql_query))
+        connection.commit()
+    print("Duplicates removed successfully!")
 
 
 def main():
-    get_and_push()
+    remove_duplicates()
 
 if __name__ == "__main__":
     main()
