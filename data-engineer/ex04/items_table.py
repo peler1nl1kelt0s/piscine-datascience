@@ -13,7 +13,7 @@ def if_table_exists(engine, table_name):
 
 
 def to_postgre(data : pd.DataFrame, tableName : str):
-    engine = db.create_engine('postgresql://museker:123@localhost:5432/piscineds')
+    engine = db.create_engine('postgresql://museker:mysecretpassword@localhost:5432/piscineds')
     if not if_table_exists(engine=engine, table_name=tableName):
         data.to_sql(
             name=tableName,
@@ -33,7 +33,7 @@ def to_postgre(data : pd.DataFrame, tableName : str):
 
 def get_data(csv_name : str) -> pd.DataFrame:
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    csv_path = os.path.join(base_dir, "..", "..","..","subject", "item", csv_name)
+    csv_path = os.path.join(base_dir,"..","subject", "item", csv_name)
     csv_path = os.path.abspath(csv_path)
     data = pd.read_csv(csv_path)
     return data

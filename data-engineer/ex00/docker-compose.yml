@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres
+    image: postgres:18
     container_name: postgres
     environment:
       POSTGRES_USER: museker
@@ -9,7 +9,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
 
   pgadmin:
     image: dpage/pgadmin4
