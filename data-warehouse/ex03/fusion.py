@@ -4,7 +4,7 @@ import sqlalchemy as db
 import os
 
 def to_postgre(data : pd.DataFrame, table : str):
-    engine = db.create_engine('postgresql://museker:123@localhost:5432/piscineds')
+    engine = db.create_engine('postgresql://museker:mysecretpassword@localhost:5432/piscineds')
     data.to_sql(
         name=table,
         con=engine,

@@ -4,16 +4,8 @@ import sqlalchemy as db
 import os
 
 
-def if_table_exists(engine, table_name):
-    metadata = MetaData()
-    metadata.reflect(bind=engine)
-    if table_name in metadata.tables:
-        print(f"Table {table_name} already exist")
-    return table_name in metadata.tables
-
-
 def to_postgre(data : pd.DataFrame, table : str):
-    engine = db.create_engine('postgresql://museker:123@localhost:5432/piscineds')
+    engine = db.create_engine('postgresql://museker:mysecretpassword@localhost:5432/piscineds')
     data.to_sql(
         name=table,
         con=engine,
@@ -39,7 +31,7 @@ def get_data(csv_name : str) -> pd.DataFrame:
 
 
 def get_and_push():
-    name_list = ["data_2022_dec", "data_2022_nov", "data_2022_oct", "data_2023_jan", "data_2023_jan"]
+    name_list = ["data_2022_dec", "data_2022_nov", "data_2022_oct", "data_2023_jan", "data_2023_feb"]
     customers = pd.concat([get_data(f + ".csv") for f in name_list])
     customers = customers.drop_duplicates(subset=["event_time", "event_type", "product_id", "price", "user_id", "user_session"])
     to_postgre(data=customers, table="customers")
